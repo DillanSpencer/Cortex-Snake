@@ -44,36 +44,36 @@ public class Minimax {
     private transient Tile[][] board;
     private transient Integer[][] regions;
 
-    public void init(Snake mySnake, int turn){
+    public void init(Snake mySnake, int turn) {
         this.turn = turn;
         this.mySnake = mySnake;
         this.pathfinding = new Pathfinding();
         this.enemy = findEnemySnake();
         this.board = updateBoard(this.mySnake, enemy);
-        this. regions = fillIn(board, regions, this.mySnake);
+        this.regions = fillIn(board, regions, this.mySnake);
     }
 
-    public MoveValue maximize(){
+    public MoveValue maximize() {
         startTime = System.currentTimeMillis();
         MoveValue move = maximize(board, mySnake, enemy, 0, Minimax.MIN, Minimax.MAX);
-       // System.out.println(move.returnMove + ", " + move.returnValue);
+        // System.out.println(move.returnMove + ", " + move.returnValue);
         return move;
     }
 
-    public MoveValue maximize(Tile[][] board, Snake player, Snake enemy, int depth, double alpha, double beta){
+    public MoveValue maximize(Tile[][] board, Snake player, Snake enemy, int depth, double alpha, double beta) {
         boolean isMaximizing = (depth % 2 == 0);
 
         int value = evaluate(board, player, enemy);
-        if(value == MAX || value == -MIN) return new MoveValue(value);
+        if (value == MAX || value == -MIN) return new MoveValue(value);
 
         MoveValue returnMove;
         MoveValue bestMove = null;
 
-        if(isMaximizing){
+        if (isMaximizing) {
 
             // check snake state
             List<Move> moves = getPossibleMoves(board, player.getHead(), false);
-            if(moves.size() == 0){
+            if (moves.size() == 0) {
                 System.out.println("NO move for ME");
                 return new MoveValue(MIN);
             }
@@ -95,19 +95,19 @@ public class Minimax {
                         alpha = returnMove.returnValue;
                     }
                     if (beta <= alpha) break;
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }else {
+        } else {
 
-            if(System.currentTimeMillis() - startTime >= 350 || depth == 5){
+            if (System.currentTimeMillis() - startTime >= 350) {
                 return new MoveValue(value);
             }
 
             // check snake state
             List<Move> moves = getPossibleMoves(board, enemy.getHead(), true);
-            if(moves.size() == 0){
+            if (moves.size() == 0) {
                 System.out.println("NO move for ENEMY");
                 return new MoveValue(MAX);
             }
@@ -128,7 +128,7 @@ public class Minimax {
                         beta = returnMove.returnValue;
                     }
                     if (beta <= alpha) break;
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -137,13 +137,13 @@ public class Minimax {
         return bestMove;
     }
 
-    private int evaluate(Tile[][] board, Snake snake, Snake enemy){
+    private int evaluate(Tile[][] board, Snake snake, Snake enemy) {
         int score = 0;
         int enemyReg = 0;
         int playerReg = 0;
 
-        if(snake.checkCollision(enemy)){
-            if(snake.length() > enemy.length()){
+        if (snake.checkCollision(enemy)) {
+            if (snake.length() > enemy.length()) {
                 score = MAX;
                 System.out.println("REALLY GOOD");
                 return score;
@@ -153,33 +153,10 @@ public class Minimax {
             return score;
         }
 
-//        Integer[][] regions = new Integer[width][height];
-//        Integer[][] enemyRegions = new Integer[width][height];
-//        fillIn(board, regions, snake);
-//        fillIn(board, enemyRegions, enemy);
+
         Point head = snake.getHead();
 
-//        for (Map.Entry<Move, Point> move : Move.adjacent(head).entrySet()) {
-//            if (movable(board, move.getValue(), true)) {
-//                playerReg += regions[move.getValue().getX()][move.getValue().getY()];
-//                score += regions[move.getValue().getX()][move.getValue().getY()]/2;
-//            }
-//        }
-//        for (Map.Entry<Move, Point> move : Move.adjacent(enemy.getHead()).entrySet()) {
-//            if (movable(board, move.getValue(), true)) {
-//                enemyReg += enemyRegions[move.getValue().getX()][move.getValue().getY()];
-//            }
-//        }
-
-//        Point center = new Point(width/2, height/2);
-//        score -= Point.distance(head, center) * 2;
-
-//        if(playerReg > enemyReg) score += (playerReg - enemyReg);
-
-//        if(snake.longerThan(enemy) && snake.checkCollision(enemy)){
-//            score = MAX;
-//            System.out.println("GOOD, " + snake.getHead() + ", " + snake.getName() + ", " + turn);
-//        }
+        if(board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 100;
 
         return score;
     }
@@ -188,8 +165,8 @@ public class Minimax {
     public boolean exists(Point point) {
         if (point.getX() < 0) return false;
         if (point.getY() < 0) return false;
-        if (point.getX() > width-1) return false;
-        if (point.getY() > height-1) return false;
+        if (point.getX() > width - 1) return false;
+        if (point.getY() > height - 1) return false;
         return true;
     }
 
@@ -201,15 +178,14 @@ public class Minimax {
     private boolean isFilled(Point point, Tile[][] board, boolean flag) {
         if (!exists(point)) return true;
 
-        if(flag) {
+        if (flag) {
             return board[point.getX()][point.getY()].getTileType() != TileType.EMPTY
                     && board[point.getX()][point.getY()].getTileType() != TileType.FOOD
                     && board[point.getX()][point.getY()].getTileType() != TileType.TAIL
                     && board[point.getX()][point.getY()].getTileType() != TileType.HEADS
                     && board[point.getX()][point.getY()].getTileType() != TileType.FAKE_WALL
                     && board[point.getX()][point.getY()].getTileType() != TileType.ME;
-        }
-        else{
+        } else {
             return board[point.getX()][point.getY()].getTileType() != TileType.EMPTY
                     && board[point.getX()][point.getY()].getTileType() != TileType.FOOD
                     && board[point.getX()][point.getY()].getTileType() != TileType.TAIL
@@ -249,7 +225,7 @@ public class Minimax {
     }
 
     private Integer[][] fillIn(Tile[][] tiles, Integer[][] regions, Snake s) {
-        if(regions == null) regions = new Integer[width][height];
+        if (regions == null) regions = new Integer[width][height];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 if (isFilled(new Point(x, y), tiles, true)) {
@@ -323,14 +299,14 @@ public class Minimax {
         return condition.onFailure(visited);
     }
 
-    private Snake findEnemySnake(){
+    private Snake findEnemySnake() {
         Snake enemy = null;
         //get max distance
         double distance = 1000;
         for (Snake s : snakes) {
             if (!s.equals(mySnake)) {
                 double dist = Point.distance(mySnake.getHead(), s.getHead());
-                if(dist < distance){
+                if (dist < distance) {
                     distance = dist;
                     enemy = s;
                 }
@@ -353,37 +329,37 @@ public class Minimax {
         Point found = food.get(0);
         for (Point snack : food) {
             dist = Math.abs((current.getX()) - snack.getX()) + (Math.abs((current.getY()) - snack.getY()));
-            dist -= regions[snack.getX()][snack.getY()]/100;
+            dist -= regions[snack.getX()][snack.getY()] / 100;
             if (dist < min) {
                 min = dist;
                 found = snack;
             }
         }
-        if(regions[found.getX()][found.getY()] < mySnake.length()*2) return null;
+        if (regions[found.getX()][found.getY()] < mySnake.length() * 2) return null;
         return found;
     }
 
-    private Point bestHeadTile(Point head){
+    private Point bestHeadTile(Point head) {
         List<Point> points = new ArrayList<Point>();
         Point tile = null;
-        Point center = new Point(width/2, height/2);
-        for(int x = -1; x <= 1; x++){
-            if(x == 0) continue;
-            for(int y = -1; y <= 1; y++){
-                if(y == 0) continue;
-                Point curr = new Point(head.getX()+x, head.getY()+y);
-                if(movable(board, curr, true))
+        Point center = new Point(width / 2, height / 2);
+        for (int x = -1; x <= 1; x++) {
+            if (x == 0) continue;
+            for (int y = -1; y <= 1; y++) {
+                if (y == 0) continue;
+                Point curr = new Point(head.getX() + x, head.getY() + y);
+                if (movable(board, curr, true))
                     points.add(curr);
             }
         }
-        if(points.size() == 0) {
-            for(Map.Entry<Move, Point> move : Move.adjacent(head).entrySet()){
+        if (points.size() == 0) {
+            for (Map.Entry<Move, Point> move : Move.adjacent(head).entrySet()) {
                 if (movable(board, move.getValue(), true))
                     points.add(move.getValue());
             }
         }
-        for(Point p : points){
-            if(tile == null || Point.distance(p, center) < Point.distance(tile, center)){
+        for (Point p : points) {
+            if (tile == null || Point.distance(p, center) < Point.distance(tile, center)) {
                 tile = p;
             }
         }
@@ -392,7 +368,7 @@ public class Minimax {
 
     public Move findFood(Point current) {
         Point food = nearestFood(current);
-        if(food == null || mySnake.distance(food) > enemy.distance(food)) return null;
+        if (food == null || mySnake.distance(food) > enemy.distance(food)) return null;
 
         List<Tile> path = pathfinding.getRoute(board, regions, current, food);
 
@@ -432,7 +408,7 @@ public class Minimax {
         System.out.println("FINDING EXIT");
         int size = 999;
         Move move = null;
-        for(Map.Entry<Move, Point> m : Move.adjacent(current).entrySet()){
+        for (Map.Entry<Move, Point> m : Move.adjacent(current).entrySet()) {
             if (movable(board, m.getValue(), true)) {
                 Point p = m.getValue();
                 if (regions[p.getX()][p.getY()] < size) {
@@ -472,7 +448,7 @@ public class Minimax {
             try {
                 if (snake.equals(sn)) snake = (Snake) ObjectCloner.deepCopy(sn);
                 else if (snake.equals(e)) snake = (Snake) ObjectCloner.deepCopy(e);
-            }catch (Exception exc){
+            } catch (Exception exc) {
                 exc.printStackTrace();
             }
 
@@ -486,7 +462,7 @@ public class Minimax {
                 } else {
                     try {
                         board[body.get(i).getX()][body.get(i).getY()] = new Tile(TileType.WALL, body.get(i).getX(), body.get(i).getY());
-                    }catch (ArrayIndexOutOfBoundsException arr){
+                    } catch (ArrayIndexOutOfBoundsException arr) {
                         System.out.println("Out of bounds at index: " + i);
                     }
                 }
@@ -495,7 +471,7 @@ public class Minimax {
             if (snake.equals(sn)) {
                 try {
                     board[head.getX()][head.getY()] = new Tile(TileType.ME, head.getX(), head.getY());
-                }catch (ArrayIndexOutOfBoundsException as){
+                } catch (ArrayIndexOutOfBoundsException as) {
                     System.out.println("Out of bounds at index: " + head.getX() + ", " + head.getY());
                 }
             } else {
@@ -518,23 +494,23 @@ public class Minimax {
         return board;
     }
 
-    private void clearSnake(Snake snake){
-        for(Point p: snake.getBody()){
+    private void clearSnake(Snake snake) {
+        for (Point p : snake.getBody()) {
             board[p.getX()][p.getY()] = new Tile(TileType.EMPTY, p.getX(), p.getY());
         }
     }
 
     public void printBoard(Tile[][] board) {
         System.out.println("---------------------------- Turn: " + turn);
-        for (int i = height-1; i >= 0; i--) {
+        for (int i = height - 1; i >= 0; i--) {
             for (int j = 0; j < width; j++) {
                 if (board[j][i].getTileType() == TileType.WALL) System.out.print("W, ");
-                if (board[j][i].getTileType()  == TileType.ME) System.out.print("M, ");
-                if (board[j][i].getTileType()  == TileType.EMPTY) System.out.print("E, ");
-                if (board[j][i].getTileType()  == TileType.HEADS) System.out.print("H, ");
-                if (board[j][i].getTileType()  == TileType.TAIL) System.out.print("T, ");
-                if (board[j][i].getTileType()  == TileType.FAKE_WALL) System.out.print("F, ");
-                if (board[j][i].getTileType()  == TileType.FOOD) System.out.print("X, ");
+                if (board[j][i].getTileType() == TileType.ME) System.out.print("M, ");
+                if (board[j][i].getTileType() == TileType.EMPTY) System.out.print("E, ");
+                if (board[j][i].getTileType() == TileType.HEADS) System.out.print("H, ");
+                if (board[j][i].getTileType() == TileType.TAIL) System.out.print("T, ");
+                if (board[j][i].getTileType() == TileType.FAKE_WALL) System.out.print("F, ");
+                if (board[j][i].getTileType() == TileType.FOOD) System.out.print("X, ");
             }
             System.out.println();
         }
@@ -574,7 +550,9 @@ public class Minimax {
         this.snakes = snakes;
     }
 
-    public int getTurn() {return this.turn;}
+    public int getTurn() {
+        return this.turn;
+    }
 
     @JsonProperty("food")
     public List<Point> getFood() {
@@ -585,6 +563,8 @@ public class Minimax {
         this.food = food;
     }
 
-    public Tile[][] getBoard(){ return board;}
+    public Tile[][] getBoard() {
+        return board;
+    }
 
 }

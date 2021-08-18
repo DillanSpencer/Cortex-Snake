@@ -167,7 +167,7 @@ public class Minimax {
         fillIn(board, regions, snake);
         fillIn(board, enemyRegions, enemy);
 
-        if(this.board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 10;
+        if(this.board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 1000;
 
 
         for (Map.Entry<Move, Point> move : Move.adjacent(head).entrySet()) {

@@ -121,6 +121,8 @@ public class Snake implements Serializable {
             System.out.println("HUNGRY");
             return SnakeState.HUNGRY;
         }
+        if(longerThan(enemy)) return SnakeState.AGRESSIVE;
+        if(Point.manhattanDistance(getHead(), enemy.getHead()) >= 3) return SnakeState.HUNGRY;
 
         return SnakeState.SMART;
     }

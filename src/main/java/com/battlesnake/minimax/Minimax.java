@@ -156,7 +156,7 @@ public class Minimax {
 
         Point head = snake.getHead();
 
-        if(board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 100;
+        if(board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 1000 / snake.getHealth();
 
         return score;
     }

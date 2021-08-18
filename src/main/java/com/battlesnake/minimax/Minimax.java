@@ -168,7 +168,7 @@ public class Minimax {
         fillIn(board, enemyRegions, enemy);
 
         if(this.board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 10;
-        score += (5 - Point.manhattanDistance(head, nearestFoodManhattan(head)));
+        //score += (5 - Point.manhattanDistance(head, nearestFoodManhattan(head)));
 
 
 //        for (Map.Entry<Move, Point> move : Move.adjacent(head).entrySet()) {

@@ -167,11 +167,7 @@ public class Minimax {
         fillIn(board, regions, snake);
         fillIn(board, enemyRegions, enemy);
 
-        Move foodMove = findFood(snake.getBody().get(1));
-        Point translate = null;
-        if(foodMove != null)
-            translate = foodMove.translate(snake.getBody().get(1));
-            if(head.equals(translate)) score += (10);
+        if(board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 10;
 
 
 //        for (Map.Entry<Move, Point> move : Move.adjacent(head).entrySet()) {

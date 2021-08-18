@@ -172,7 +172,7 @@ public class Minimax {
         }
 
         if (snakeNum > enemyNum) score = snakeNum - enemyNum;
-        else{ score -= enemyNum - snakeNum}
+        else{ score -= enemyNum - snakeNum;}
 
         //if (board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 1000 / snake.getHealth();
 

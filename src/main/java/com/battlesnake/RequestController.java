@@ -32,10 +32,10 @@ public class RequestController {
     public StartResponse get() {
         return new StartResponse()
                 .setApiVersion("1")
-                .setName("Crimson Snake")
-                .setColor("#990000")
-                .setHeadType(HeadType.PIXEL)
-                .setTailType(TailType.BOLT)
+                .setName("Cortex Snake")
+                .setColor("#1D5273")
+                .setHeadType(HeadType.SWIRL)
+                .setTailType(TailType.FRECKLED)
                 .setTaunt("Crimson Snakeee");
     }
 

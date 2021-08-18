@@ -29,6 +29,7 @@ public enum HeadType {
   SHADES("shades"),
   SMILE("smile"),
   SKI("bwc-ski"),
+  SWIRL("caffeine"),
   TONGUE("tongue");
 
   private String name;

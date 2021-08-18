@@ -101,7 +101,7 @@ public class Minimax {
             }
         } else {
 
-            if (System.currentTimeMillis() - startTime >= 350 || depth == 7) {
+            if (System.currentTimeMillis() - startTime >= 300 || depth == 7) {
                 return new MoveValue(value);
             }
 
@@ -155,7 +155,7 @@ public class Minimax {
         if (snake.longerThan(enemy)) {
             for (Point p : findAdjacent(enemy.getHead())) {
                 if (movable(board, p, false)) {
-                    score += 100 / Point.manhattanDistance(snake.getHead(), enemy.getHead());
+                    score += 10 / Point.manhattanDistance(snake.getHead(), enemy.getHead());
                     break;
                 }
             }

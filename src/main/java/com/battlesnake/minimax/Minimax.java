@@ -152,15 +152,16 @@ public class Minimax {
             System.out.println("BAD");
             return score;
         }
-        if(snake.longerThan(enemy)){
-            for(Point p : findAdjacent(enemy.getHead())){
-                if(movable(board, p, false)){
+        if (snake.longerThan(enemy)) {
+            for (Point p : findAdjacent(enemy.getHead())) {
+                if (movable(board, p, false)) {
                     score += 100 / Point.manhattanDistance(snake.getHead(), enemy.getHead());
                     break;
                 }
             }
+        } else {
+            score += 100 / Point.manhattanDistance(snake.getHead(), nearestFood(snake.getHead())) + 1;
         }
-        score += 100 / Point.manhattanDistance(snake.getHead(), nearestFood(snake.getHead()));
         return score;
     }
 

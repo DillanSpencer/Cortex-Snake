@@ -101,7 +101,7 @@ public class Minimax {
             }
         } else {
 
-            if (System.currentTimeMillis() - startTime >= 300 || depth == 7) {
+            if (System.currentTimeMillis() - startTime >= 350 || depth == 5) {
                 return new MoveValue(value);
             }
 
@@ -168,8 +168,10 @@ public class Minimax {
         fillIn(board, enemyRegions, enemy);
 
         Move foodMove = findFood(snake.getBody().get(1));
-        Point translate = foodMove.translate(snake.getBody().get(1));
-        if(head.equals(translate)) score += (10);
+        Point translate = null;
+        if(foodMove != null)
+            translate = foodMove.translate(snake.getBody().get(1));
+            if(head.equals(translate)) score += (10);
 
 
 //        for (Map.Entry<Move, Point> move : Move.adjacent(head).entrySet()) {

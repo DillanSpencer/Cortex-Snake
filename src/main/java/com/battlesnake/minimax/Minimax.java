@@ -167,7 +167,7 @@ public class Minimax {
         fillIn(board, regions, snake);
         fillIn(board, enemyRegions, enemy);
 
-        if(board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 10;
+        if(this.board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 10;
         score += (5 - Point.manhattanDistance(head, nearestFoodManhattan(head)));
 
 

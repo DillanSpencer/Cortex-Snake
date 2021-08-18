@@ -153,6 +153,8 @@ public class Minimax {
             return score;
         }
 
+        int snakeNum = 0;
+        int enemyNum = 0;
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -162,12 +164,15 @@ public class Minimax {
                 double enemyDist = Point.manhattanDistance(enemy.getHead(), tile);
 
                 if (snakeDist > enemyDist) {
-                    score += snakeDist;
+                    snakeNum++;
                 } else if (snakeDist < enemyDist) {
-                    score -= enemyDist;
+                    enemyNum++;
                 }
             }
         }
+
+        if (snakeNum > enemyNum) score = MAX;
+        else{ score = MIN;}
 
         //if (board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 1000 / snake.getHealth();
 

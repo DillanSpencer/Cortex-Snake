@@ -160,11 +160,8 @@ public class Minimax {
                 }
             }
         } else {
-            try {
-                score += 100 / Point.manhattanDistance(snake.getHead(), nearestFood(snake.getHead()));
-            }catch (Exception e){
-                score += 100;
-            }
+            score += 100 / Point.manhattanDistance(snake.getHead(), nearestFood(snake.getHead())) + 1;
+            if(board[snake.getHead().getX()][snake.getHead().getY()].getTileType() == TileType.FOOD) score += 500;
         }
         return score;
     }

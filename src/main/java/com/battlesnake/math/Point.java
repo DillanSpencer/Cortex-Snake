@@ -28,6 +28,12 @@ public class Point implements Serializable {
                 Math.pow(other.getY() - point.getY(), 2));
     }
 
+    public static double manhattanDistance(Point point, Point other){
+        double dx = point.getX() - other.getX();
+        double dy = point.getY() - other.getY();
+        return Math.abs(dx) + Math.abs(dy);
+    }
+
     public boolean equals(Point other){
         if(x == other.getX() && y == other.getY()) return true;
         return false;

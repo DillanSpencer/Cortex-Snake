@@ -154,9 +154,22 @@ public class Minimax {
         }
 
 
-        Point head = snake.getHead();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                // get distance from each player
+                Point tile = new Point(x, y);
+                double snakeDist = Point.manhattanDistance(snake.getHead(), tile);
+                double enemyDist = Point.manhattanDistance(enemy.getHead(), tile);
 
-        if(board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 1000 / snake.getHealth();
+                if (snakeDist > enemyDist) {
+                    score += snakeDist;
+                } else if (snakeDist < enemyDist) {
+                    score -= enemyDist;
+                }
+            }
+        }
+
+        //if (board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 1000 / snake.getHealth();
 
         return score;
     }
@@ -297,6 +310,28 @@ public class Minimax {
             }
         }
         return condition.onFailure(visited);
+    }
+
+    protected int[][] voronoi(Tile[][] board, Snake snake, Snake enemy) {
+        int[][] voronoi = new int[width][height];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                // get distance from each player
+                Point tile = new Point(x, y);
+                double snakeDist = Point.manhattanDistance(snake.getHead(), tile);
+                double enemyDist = Point.manhattanDistance(enemy.getHead(), tile);
+
+                if (snakeDist > enemyDist) {
+                    voronoi[x][y] = 1;
+                } else if (snakeDist < enemyDist) {
+                    voronoi[x][y] = -1;
+                } else {
+                    voronoi[x][y] = 0;
+                }
+            }
+        }
+
+        return voronoi;
     }
 
     private Snake findEnemySnake() {

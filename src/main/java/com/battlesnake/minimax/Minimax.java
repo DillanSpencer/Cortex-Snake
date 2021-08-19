@@ -82,6 +82,7 @@ public class Minimax {
         // transposition lookup
         MoveValue transMove = transposition.get(board);
         if (transMove != null && transMove.depth >= depth) {
+            System.out.println("Trans Move found");
             if (transMove.flag == MoveValue.FLAG.EXACT) return new MoveValue(transMove.returnValue, depth);
             else if (transMove.flag == MoveValue.FLAG.LOWERBOUND) alpha = Math.max(alpha, transMove.returnValue);
             else if (transMove.flag == MoveValue.FLAG.UPPERBOUND) beta = Math.min(beta, transMove.returnValue);
@@ -101,6 +102,7 @@ public class Minimax {
             // Transposition re-order
             if (transMove != null) {
                 //reorder
+                System.out.println("Reorder Move found");
                 moves = reorderMoves(moves, transMove);
             }
 
@@ -179,11 +181,11 @@ public class Minimax {
         if (snake.checkCollision(enemy)) {
             if (snake.length() > enemy.length()) {
                 score = MAX;
-                System.out.println("REALLY GOOD");
+                //System.out.println("REALLY GOOD");
                 return score;
             }
             score = MIN;
-            System.out.println("BAD");
+            //System.out.println("BAD");
             return score;
         }
 //        if (snake.longerThan(enemy)) {

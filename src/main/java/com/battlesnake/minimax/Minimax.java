@@ -43,7 +43,7 @@ public class Minimax {
 
     private transient Tile[][] board;
     private transient Integer[][] regions;
-    private transient HashMap<Tile[][], MoveValue> transposition;
+    private transient HashMap<String, MoveValue> transposition;
 
     public void init(Snake mySnake, int turn) {
         this.turn = turn;
@@ -80,7 +80,7 @@ public class Minimax {
         }
 
         // transposition lookup
-        MoveValue transMove = transposition.get(board);
+        MoveValue transMove = transposition.get(boardToKey(board));
         if(transMove != null)
             System.out.println(transMove.returnValue);
 
@@ -171,7 +171,7 @@ public class Minimax {
             transMove.flag = MoveValue.FLAG.EXACT;
         }
 
-        transposition.put(board, transMove);
+        transposition.put(boardToKey(board), transMove);
 
         return bestMove;
     }
@@ -252,7 +252,7 @@ public class Minimax {
                     && board[point.getX()][point.getY()].getTileType() != TileType.FOOD
                     && board[point.getX()][point.getY()].getTileType() != TileType.TAIL
                     && board[point.getX()][point.getY()].getTileType() != TileType.HEADS
-                    && board[point.getX()][point.getY()].getTileType() != TileType.FAKE_WALL
+                    && board[point.getX()][point.getY()].getTileType() != TileType.DUMMY_WALL
                     && board[point.getX()][point.getY()].getTileType() != TileType.ME;
         } else {
             return board[point.getX()][point.getY()].getTileType() != TileType.EMPTY
@@ -596,7 +596,7 @@ public class Minimax {
                             if (board[point.getX()][point.getY()].getTileType() == TileType.EMPTY
                                     || board[point.getX()][point.getY()].getTileType() == TileType.FOOD
                                     || board[point.getX()][point.getY()].getTileType() == TileType.TAIL) {
-                                board[point.getX()][point.getY()] = new Tile(TileType.FAKE_WALL, point.getX(), point.getY());
+                                board[point.getX()][point.getY()] = new Tile(TileType.DUMMY_WALL, point.getX(), point.getY());
                             }
                         }
                     }
@@ -612,6 +612,16 @@ public class Minimax {
         }
     }
 
+    private String boardToKey(Tile[][] board){
+        String key = "";
+        for (int y = 0; y < 11; y++) {
+            for (int x = 0; x < 11; x++) {
+                key += board[x][y].getTileType().toString().charAt(0) + "/";
+            }
+        }
+        return key;
+    }
+
     private boolean outOfTime(long time) {
         return System.currentTimeMillis() - time > 300;
     }
@@ -625,7 +635,7 @@ public class Minimax {
                 if (board[j][i].getTileType() == TileType.EMPTY) System.out.print("E, ");
                 if (board[j][i].getTileType() == TileType.HEADS) System.out.print("H, ");
                 if (board[j][i].getTileType() == TileType.TAIL) System.out.print("T, ");
-                if (board[j][i].getTileType() == TileType.FAKE_WALL) System.out.print("F, ");
+                if (board[j][i].getTileType() == TileType.DUMMY_WALL) System.out.print("F, ");
                 if (board[j][i].getTileType() == TileType.FOOD) System.out.print("X, ");
             }
             System.out.println();

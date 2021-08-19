@@ -79,7 +79,7 @@ public class BoardGame {
                             if (board[point.getX()][point.getY()].getTileType() == TileType.EMPTY
                                     || board[point.getX()][point.getY()].getTileType() == TileType.FOOD
                                     || board[point.getX()][point.getY()].getTileType() == TileType.TAIL) {
-                                board[point.getX()][point.getY()].setTileType(TileType.FAKE_WALL);
+                                board[point.getX()][point.getY()].setTileType(TileType.DUMMY_WALL);
                             }
                         }
                     }
@@ -115,7 +115,7 @@ public class BoardGame {
                     && board[point.getX()][point.getY()].getTileType() != TileType.FOOD
                     && board[point.getX()][point.getY()].getTileType() != TileType.TAIL
                     && board[point.getX()][point.getY()].getTileType() != TileType.HEADS
-                    && board[point.getX()][point.getY()].getTileType() != TileType.FAKE_WALL;
+                    && board[point.getX()][point.getY()].getTileType() != TileType.DUMMY_WALL;
         }
     }
 

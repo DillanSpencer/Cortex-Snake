@@ -127,7 +127,7 @@ public class Pathfinding {
         int centerCost = distanceFromEdges(tile);
         //int neighborCost = (regions[tile.getX()][tile.getY()]);
         int extraMovementCost = 0;
-        if (tile.getTileType() == TileType.FAKE_WALL) {
+        if (tile.getTileType() == TileType.DUMMY_WALL) {
             extraMovementCost+=1000;
         }
         if(tile.getTileType() == TileType.FOOD){
@@ -141,7 +141,7 @@ public class Pathfinding {
         int centerCost = distanceFromEdges(tile) * 10;
         int neighborCost = checkNeighbours(tile);
         int extraMovementCost = 0;
-        if (tile.getTileType() == TileType.FAKE_WALL) {
+        if (tile.getTileType() == TileType.DUMMY_WALL) {
             extraMovementCost+=1000;
         }
 
@@ -164,7 +164,7 @@ public class Pathfinding {
             if (nextY >= 0 && nextY < maxHeight) {
                 return tiles[nextX][nextY].isOpen() &&
                         tiles[nextX][nextY].getTileType() != TileType.WALL
-                        && tiles[nextX][nextY].getTileType() != TileType.FAKE_WALL;
+                        && tiles[nextX][nextY].getTileType() != TileType.DUMMY_WALL;
 
             }
         }

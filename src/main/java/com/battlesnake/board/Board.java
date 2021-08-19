@@ -71,7 +71,7 @@ public class Board {
                         if (exists(point)) {
                             if (board[point.getX()][point.getY()] == TileType.EMPTY
                                     || board[point.getX()][point.getY()] == TileType.FOOD) {
-                                board[point.getX()][point.getY()] = TileType.FAKE_WALL;
+                                board[point.getX()][point.getY()] = TileType.DUMMY_WALL;
                             }
                         }
                     }
@@ -283,7 +283,7 @@ public class Board {
         return board[point.getX()][point.getY()] != TileType.EMPTY
                 && board[point.getX()][point.getY()] != TileType.FOOD
                 && board[point.getX()][point.getY()] != TileType.TAIL
-                && board[point.getX()][point.getY()] != TileType.FAKE_WALL
+                && board[point.getX()][point.getY()] != TileType.DUMMY_WALL
                 && board[point.getX()][point.getY()] != TileType.HEADS;
     }
 
@@ -302,7 +302,7 @@ public class Board {
 
     public boolean isDangerousSpotFilled(Point point) {
         if (!exists(point)) return false;
-        return board[point.getX()][point.getY()] == TileType.FAKE_WALL;
+        return board[point.getX()][point.getY()] == TileType.DUMMY_WALL;
     }
 
     private List<Move> getPossibleMoves(TileType[][] currentBoard, Point point) {

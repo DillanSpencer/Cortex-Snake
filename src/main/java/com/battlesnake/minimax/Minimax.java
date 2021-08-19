@@ -66,7 +66,7 @@ public class Minimax {
     }
 
     public MoveValue maximize(Tile[][] board, Snake player, Snake enemy, int depth, double alpha, double beta) {
-        boolean isMaximizing = (depth % 2 == 0);
+        boolean isMaximizing = (depth % 2 == 1);
 
         int value = evaluate(board, player, enemy);
         if (value == MAX || value == -MIN) return new MoveValue(value);

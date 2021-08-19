@@ -75,7 +75,7 @@ public class Minimax {
         MoveValue returnMove;
         MoveValue bestMove = null;
 
-        if (depth == 0) {
+        if (depth == 0 || outOfTime(startTime)) {
             return new MoveValue(value);
         }
 

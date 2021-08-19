@@ -103,7 +103,7 @@ public class Minimax {
             }
 
             // Transposition re-order
-            if (transMove.returnMove != null && transMove.depth >= depth) {
+            if (depth != 1 || transMove.returnMove != null && transMove.depth >= depth) {
                 //reorder
                 System.out.println("Reorder Move found");
                 moves = reorderMoves(moves, transMove);

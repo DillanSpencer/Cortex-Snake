@@ -59,7 +59,7 @@ public class Minimax {
         startTime = System.currentTimeMillis();
         MoveValue move = null;
         int distance;
-        for (distance = 1; distance < 5 && !outOfTime(startTime); distance++) {
+        for (distance = 1; distance < 9 && !outOfTime(startTime); distance++) {
             move = maximize(board, mySnake, enemy, distance, Minimax.MIN, Minimax.MAX);
         }
         // System.out.println(move.returnMove + ", " + move.returnValue);
@@ -159,21 +159,21 @@ public class Minimax {
             System.out.println("BAD");
             return score;
         }
-        if (snake.longerThan(enemy)) {
-            for (Point p : findAdjacent(enemy.getHead())) {
-                if (movable(board, p, false)) {
-                    score += 100 / Point.manhattanDistance(snake.getHead(), enemy.getHead());
-                    break;
-                }
-            }
-        }
+//        if (snake.longerThan(enemy)) {
+//            for (Point p : findAdjacent(enemy.getHead())) {
+//                if (movable(board, p, false)) {
+//                    score += 100 / Point.manhattanDistance(snake.getHead(), enemy.getHead());
+//                    break;
+//                }
+//            }
+//        }
 
         Integer[][] regions = new Integer[width][height];
         Integer[][] enemyRegions = new Integer[width][height];
         fillIn(board, regions, snake);
         fillIn(board, enemyRegions, enemy);
 
-        if (this.board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 100;
+//        if (this.board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 100;
 
 
         for (Map.Entry<Move, Point> move : Move.adjacent(head).entrySet()) {

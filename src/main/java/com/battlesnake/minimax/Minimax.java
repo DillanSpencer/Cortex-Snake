@@ -82,7 +82,7 @@ public class Minimax {
         // transposition lookup
         MoveValue transMove = transposition.get(boardToKey(board));
         if(transMove != null)
-            System.out.println(transMove.returnValue);
+            System.out.println(boardToKey(board));
 
         if (transMove != null && transMove.depth >= depth) {
             System.out.println("Trans Move found");

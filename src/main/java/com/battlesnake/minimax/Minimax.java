@@ -165,6 +165,7 @@ public class Minimax {
         transMove = bestMove;
         transMove.returnMove = bestMove.returnMove;
         transMove.returnValue = bestMove.returnValue;
+        transMove.depth = depth;
         if (bestMove.returnValue <= alpha) transMove.flag = MoveValue.FLAG.UPPERBOUND;
         else if (bestMove.returnValue >= beta) transMove.flag = MoveValue.FLAG.LOWERBOUND;
         else {

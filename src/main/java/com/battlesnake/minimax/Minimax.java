@@ -81,7 +81,8 @@ public class Minimax {
 
         // transposition lookup
         MoveValue transMove = transposition.get(board);
-        if (transMove != null && transMove.depth >= depth) {
+        System.out.println(transMove.returnMove);
+        if (transMove.returnMove != null && transMove.depth >= depth) {
             System.out.println("Trans Move found");
             if (transMove.flag == MoveValue.FLAG.EXACT) return new MoveValue(transMove.returnValue, depth);
             else if (transMove.flag == MoveValue.FLAG.LOWERBOUND) alpha = Math.max(alpha, transMove.returnValue);
@@ -100,7 +101,7 @@ public class Minimax {
             }
 
             // Transposition re-order
-            if (transMove != null && transMove.depth >= depth) {
+            if (transMove.returnMove != null && transMove.depth >= depth) {
                 //reorder
                 System.out.println("Reorder Move found");
                 moves = reorderMoves(moves, transMove);

@@ -139,13 +139,6 @@ public class Minimax {
                 return new MoveValue(MAX, depth);
             }
 
-            // Transposition re-order
-            if (transMove != null && transMove.depth >= depth) {
-                //reorder
-                System.out.println("Reorder Move Enemy found");
-                moves = reorderMoves(moves, transMove);
-            }
-
             for (Move currentMove : moves) {
                 try {
                     Snake tempSnake = (Snake) ObjectCloner.deepCopy(enemy);

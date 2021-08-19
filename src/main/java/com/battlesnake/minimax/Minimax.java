@@ -81,8 +81,6 @@ public class Minimax {
 
         // transposition lookup
         MoveValue transMove = transposition.get(boardToKey(board));
-        if(transMove != null)
-            System.out.println(boardToKey(board));
 
         if (transMove != null && transMove.depth >= depth) {
             System.out.println("Trans Move found");
@@ -137,6 +135,13 @@ public class Minimax {
             if (moves.size() == 0) {
                 System.out.println("NO move for ENEMY");
                 return new MoveValue(MAX, depth);
+            }
+
+            // Transposition re-order
+            if (transMove != null && transMove.depth >= depth) {
+                //reorder
+                System.out.println("Reorder Move Enemy found");
+                moves = reorderMoves(moves, transMove);
             }
 
             for (Move currentMove : moves) {

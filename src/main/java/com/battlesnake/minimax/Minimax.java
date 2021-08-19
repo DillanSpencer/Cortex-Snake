@@ -163,6 +163,7 @@ public class Minimax {
 
         // transposition store
         transMove = bestMove;
+        transMove.returnMove = bestMove.returnMove;
         transMove.returnValue = bestMove.returnValue;
         if (bestMove.returnValue <= alpha) transMove.flag = MoveValue.FLAG.UPPERBOUND;
         else if (bestMove.returnValue >= beta) transMove.flag = MoveValue.FLAG.LOWERBOUND;

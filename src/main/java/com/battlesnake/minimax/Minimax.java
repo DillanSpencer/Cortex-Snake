@@ -59,14 +59,15 @@ public class Minimax {
         startTime = System.currentTimeMillis();
         MoveValue move = null;
         int distance;
-        for (distance = 1; distance < 5 && !outOfTime(startTime); distance++)
+        for (distance = 1; distance < 5 && !outOfTime(startTime); distance++) {
             move = maximize(board, mySnake, enemy, distance, Minimax.MIN, Minimax.MAX);
+        }
         // System.out.println(move.returnMove + ", " + move.returnValue);
         return move;
     }
 
     public MoveValue maximize(Tile[][] board, Snake player, Snake enemy, int depth, double alpha, double beta) {
-        boolean isMaximizing = (depth % 2 == 0);
+        boolean isMaximizing = (depth % 2 == 1);
 
         int value = evaluate(board, player, enemy);
         if (value == MAX || value == -MIN) return new MoveValue(value);

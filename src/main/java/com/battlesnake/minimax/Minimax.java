@@ -43,6 +43,7 @@ public class Minimax {
 
     private transient Tile[][] board;
     private transient Integer[][] regions;
+    private transient HashMap<Tile[][], Move> transposition;
 
     public void init(Snake mySnake, int turn) {
         this.turn = turn;
@@ -51,11 +52,15 @@ public class Minimax {
         this.enemy = findEnemySnake();
         this.board = updateBoard(this.mySnake, enemy);
         this.regions = fillIn(board, regions, this.mySnake);
+        this.transposition = new HashMap<>();
     }
 
     public MoveValue maximize() {
         startTime = System.currentTimeMillis();
-        MoveValue move = maximize(board, mySnake, enemy, 0, Minimax.MIN, Minimax.MAX);
+        MoveValue move = null;
+        int distance;
+        for (distance = 1; distance < 5 && !outOfTime(startTime); distance++)
+            move = maximize(board, mySnake, enemy, distance, Minimax.MIN, Minimax.MAX);
         // System.out.println(move.returnMove + ", " + move.returnValue);
         return move;
     }
@@ -68,6 +73,10 @@ public class Minimax {
 
         MoveValue returnMove;
         MoveValue bestMove = null;
+
+        if (depth == 0) {
+            return new MoveValue(value);
+        }
 
         if (isMaximizing) {
 
@@ -84,7 +93,7 @@ public class Minimax {
                     Snake tempEnemy = (Snake) ObjectCloner.deepCopy(enemy);
                     tempSnake.applyMove(currentMove, food);
                     Tile[][] tempBoard = updateBoard(tempSnake, tempEnemy);
-                    returnMove = maximize(tempBoard, tempSnake, tempEnemy, depth + 1, alpha, beta);
+                    returnMove = maximize(tempBoard, tempSnake, tempEnemy, depth - 1, alpha, beta);
 
                     if (bestMove == null || returnMove.returnValue > bestMove.returnValue) {
                         bestMove = returnMove;
@@ -100,10 +109,6 @@ public class Minimax {
                 }
             }
         } else {
-
-            if (System.currentTimeMillis() - startTime >= 350 || depth == 5) {
-                return new MoveValue(value);
-            }
 
             // check snake state
             List<Move> moves = getPossibleMoves(board, enemy.getHead(), true);
@@ -167,7 +172,7 @@ public class Minimax {
         fillIn(board, regions, snake);
         fillIn(board, enemyRegions, enemy);
 
-        if(this.board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 1000;
+        if (this.board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 100;
 
 
         for (Map.Entry<Move, Point> move : Move.adjacent(head).entrySet()) {
@@ -564,6 +569,10 @@ public class Minimax {
         for (Point p : snake.getBody()) {
             board[p.getX()][p.getY()] = new Tile(TileType.EMPTY, p.getX(), p.getY());
         }
+    }
+
+    private boolean outOfTime(long time) {
+        return System.currentTimeMillis() - time < 350;
     }
 
     public void printBoard(Tile[][] board) {

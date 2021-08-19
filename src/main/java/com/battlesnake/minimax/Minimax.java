@@ -631,7 +631,7 @@ public class Minimax {
     }
 
     private boolean outOfTime(long time) {
-        return System.currentTimeMillis() - time > 300;
+        return System.currentTimeMillis() - time > 275;
     }
 
     public void printBoard(Tile[][] board) {

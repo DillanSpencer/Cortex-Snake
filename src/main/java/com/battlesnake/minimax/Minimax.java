@@ -83,8 +83,10 @@ public class Minimax {
         MoveValue transMove = transposition.get(boardToKey(board));
 
         if (transMove != null && transMove.depth >= depth) {
-            System.out.println("Trans Move found");
-            if (transMove.flag == MoveValue.FLAG.EXACT) return new MoveValue(transMove.returnValue, depth);
+            if (transMove.flag == MoveValue.FLAG.EXACT){
+                System.out.println("Trans Move found");
+                return new MoveValue(transMove.returnValue, depth);
+            }
             else if (transMove.flag == MoveValue.FLAG.LOWERBOUND) alpha = Math.max(alpha, transMove.returnValue);
             else if (transMove.flag == MoveValue.FLAG.UPPERBOUND) beta = Math.min(beta, transMove.returnValue);
             if (alpha >= beta) return new MoveValue(transMove.returnValue, depth);

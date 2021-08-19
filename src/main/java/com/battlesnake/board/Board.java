@@ -380,7 +380,7 @@ public class Board {
         if (isMaximizing) {
             double value = boardValue(snake, enemy, depth);
             if (value != NONE || depth == 3) {
-                return new MoveValue(value);
+                return new MoveValue(value, depth);
             }
             //System.out.println("MAXIMIZING");
             List<Move> moves = getPossibleMoves(board, snake.getHead());
@@ -412,7 +412,7 @@ public class Board {
             // System.out.println("MINIMIZING");
             double value = boardValue(enemy, snake, depth);
             if (value != NONE || depth == 3) {
-                return new MoveValue(value);
+                return new MoveValue(value, depth);
             }
             List<Move> moves = getPossibleMoves(board, enemy.getHead());
             Iterator<Move> movesIterator = moves.iterator();

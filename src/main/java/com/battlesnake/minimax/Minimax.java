@@ -43,7 +43,7 @@ public class Minimax {
 
     private transient Tile[][] board;
     private transient Integer[][] regions;
-    private transient HashMap<Tile[][], Move> transposition;
+    private transient HashMap<Tile[][], MoveValue> transposition;
 
     public void init(Snake mySnake, int turn) {
         this.turn = turn;
@@ -70,23 +70,38 @@ public class Minimax {
         boolean isMaximizing = (depth % 2 == 1);
 
         int value = evaluate(board, player, enemy);
-        if (value == MAX || value == -MIN) return new MoveValue(value);
+        if (value == MAX || value == -MIN) return new MoveValue(value, depth);
 
         MoveValue returnMove;
         MoveValue bestMove = null;
 
         if (depth == 0 || outOfTime(startTime)) {
-            return new MoveValue(value);
+            return new MoveValue(value, depth);
+        }
+
+        // transposition lookup
+        MoveValue transMove = transposition.get(board);
+        if (transMove != null && transMove.depth >= depth) {
+            if (transMove.flag == MoveValue.FLAG.EXACT) return new MoveValue(transMove.returnValue, depth);
+            else if (transMove.flag == MoveValue.FLAG.LOWERBOUND) alpha = Math.max(alpha, transMove.returnValue);
+            else if (transMove.flag == MoveValue.FLAG.UPPERBOUND) beta = Math.min(beta, transMove.returnValue);
+            if (alpha >= beta) return new MoveValue(transMove.returnValue, depth);
         }
 
         if (isMaximizing) {
 
             // check snake state
             List<Move> moves = getPossibleMoves(board, player.getHead(), false);
+
             if (moves.size() == 0) {
                 System.out.println("NO move for ME");
-                return new MoveValue(MIN);
+                return new MoveValue(MIN, depth);
             }
+
+            // Transposition re-order
+//            if (transMove != null && transMove.depth < depth) {
+//                //reorder
+//            }
 
             for (Move currentMove : moves) {
                 try {
@@ -115,7 +130,7 @@ public class Minimax {
             List<Move> moves = getPossibleMoves(board, enemy.getHead(), true);
             if (moves.size() == 0) {
                 System.out.println("NO move for ENEMY");
-                return new MoveValue(MAX);
+                return new MoveValue(MAX, depth);
             }
 
             for (Move currentMove : moves) {
@@ -139,6 +154,17 @@ public class Minimax {
                 }
             }
         }
+
+        // transposition store
+        transMove = bestMove;
+        transMove.returnValue = bestMove.returnValue;
+        if (bestMove.returnValue <= alpha) transMove.flag = MoveValue.FLAG.UPPERBOUND;
+        else if (bestMove.returnValue >= beta) transMove.flag = MoveValue.FLAG.LOWERBOUND;
+        else {
+            transMove.flag = MoveValue.FLAG.EXACT;
+        }
+
+        transposition.put(board, transMove);
 
         return bestMove;
     }
@@ -233,6 +259,13 @@ public class Minimax {
 
     private boolean movable(Tile[][] board, Point point, boolean flag) {
         return !isFilled(point, board, flag);
+    }
+
+    private List<Move> reorderMoves(List<Move> moves, MoveValue move) {
+        List<Move> tempMove = moves;
+        tempMove.remove(move.returnMove);
+        tempMove.add(move.returnMove);
+        return tempMove;
     }
 
     private List<Move> getPossibleMoves(Tile[][] board, Point point, boolean flag) {

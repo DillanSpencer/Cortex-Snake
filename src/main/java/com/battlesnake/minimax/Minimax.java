@@ -66,7 +66,7 @@ public class Minimax {
     }
 
     public MoveValue maximize(Tile[][] board, Snake player, Snake enemy, int depth, double alpha, double beta) {
-        boolean isMaximizing = (depth % 2 == 1);
+        boolean isMaximizing = (depth % 2 == 0);
 
         int value = evaluate(board, player, enemy);
         if (value == MAX || value == -MIN) return new MoveValue(value);
@@ -123,7 +123,7 @@ public class Minimax {
                     Snake tempPlayer = (Snake) ObjectCloner.deepCopy(player);
                     tempSnake.applyMove(currentMove, food);
                     Tile[][] tempBoard = updateBoard(tempPlayer, tempSnake);
-                    returnMove = maximize(tempBoard, tempPlayer, tempSnake, depth + 1, alpha, beta);
+                    returnMove = maximize(tempBoard, tempPlayer, tempSnake, depth - 1, alpha, beta);
 
                     if (bestMove == null || returnMove.returnValue < bestMove.returnValue) {
                         bestMove = returnMove;

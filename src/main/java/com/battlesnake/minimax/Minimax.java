@@ -99,9 +99,10 @@ public class Minimax {
             }
 
             // Transposition re-order
-//            if (transMove != null && transMove.depth < depth) {
-//                //reorder
-//            }
+            if (transMove != null) {
+                //reorder
+                moves = reorderMoves(moves, transMove);
+            }
 
             for (Move currentMove : moves) {
                 try {

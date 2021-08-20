@@ -100,11 +100,14 @@ public class Minimax {
             }
 
             // Transposition re-order
-//            if (transMove != null && transMove.depth >= depth) {
-//                //reorder
-//                System.out.println("Reorder Move found");
-//                moves = reorderMoves(moves, transMove);
-//            }
+            if (transMove != null && transMove.depth < depth) {
+                for(int i = 0; i < moves.size(); i++){
+                    if(moves.get(i).equals(transMove.returnMove)){
+                        Collections.swap(moves, 0, i);
+                        break;
+                    }
+                }
+            }
 
             for (Move currentMove : moves) {
                 try {

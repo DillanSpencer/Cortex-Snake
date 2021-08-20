@@ -79,7 +79,14 @@ public class Minimax {
         MoveValue transMove = transposition.get(boardToKey(board));
 
         if (transMove != null && transMove.depth >= depth) {
-            return transMove;
+            if(transMove.flag == MoveValue.FLAG.EXACT)
+                return transMove;
+            else if(transMove.flag == MoveValue.FLAG.UPPERBOUND){
+                beta = Math.min(beta, transMove.returnValue);
+            }else if(transMove.flag == MoveValue.FLAG.LOWERBOUND){
+                alpha = Math.max(alpha, transMove.returnValue);
+            }
+            if(alpha >= beta) return transMove;
         }
 
         if (depth == 0 || outOfTime(startTime)) {
@@ -139,6 +146,16 @@ public class Minimax {
                 return new MoveValue(MAX, depth);
             }
 
+            // Transposition re-order
+            if (transMove != null && transMove.depth < depth) {
+                for(int i = 0; i < moves.size(); i++){
+                    if(moves.get(i).equals(transMove.returnMove)){
+                        Collections.swap(moves, 0, i);
+                        break;
+                    }
+                }
+            }
+
             for (Move currentMove : moves) {
                 try {
                     Snake tempSnake = (Snake) ObjectCloner.deepCopy(enemy);
@@ -166,12 +183,12 @@ public class Minimax {
         transMove.returnMove = bestMove.returnMove;
         transMove.returnValue = bestMove.returnValue;
         transMove.depth = depth;
-//        if (bestMove.returnValue <= alpha) transMove.flag = MoveValue.FLAG.UPPERBOUND;
-//        else if (bestMove.returnValue >= beta) transMove.flag = MoveValue.FLAG.LOWERBOUND;
-//        else {
-//            transMove.flag = MoveValue.FLAG.EXACT;
-//        }
-//
+        if (bestMove.returnValue <= alpha) transMove.flag = MoveValue.FLAG.UPPERBOUND;
+        else if (bestMove.returnValue >= beta) transMove.flag = MoveValue.FLAG.LOWERBOUND;
+        else {
+            transMove.flag = MoveValue.FLAG.EXACT;
+        }
+
         transposition.put(boardToKey(board), transMove);
 
         return bestMove;

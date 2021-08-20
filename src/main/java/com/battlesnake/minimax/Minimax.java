@@ -80,9 +80,9 @@ public class Minimax {
         // transposition lookup
         MoveValue transMove = transposition.get(boardToKey(board));
 
-        if (transMove != null && transMove.depth >= depth) {
-            return transMove;
-        }
+//        if (transMove != null && transMove.depth >= depth) {
+//            return transMove;
+//        }
 
         if (depth == 0 || outOfTime(startTime)) {
             MoveValue move = new MoveValue(value, depth);
@@ -102,11 +102,11 @@ public class Minimax {
             }
 
             // Transposition re-order
-            if (transMove != null && transMove.depth >= depth) {
-                //reorder
-                System.out.println("Reorder Move found");
-                moves = reorderMoves(moves, transMove);
-            }
+//            if (transMove != null && transMove.depth >= depth) {
+//                //reorder
+//                System.out.println("Reorder Move found");
+//                moves = reorderMoves(moves, transMove);
+//            }
 
             for (Move currentMove : moves) {
                 try {
@@ -161,17 +161,17 @@ public class Minimax {
         }
 
         // transposition store
-        transMove = bestMove;
-        transMove.returnMove = bestMove.returnMove;
-        transMove.returnValue = bestMove.returnValue;
-        transMove.depth = depth;
-        if (bestMove.returnValue <= alpha) transMove.flag = MoveValue.FLAG.UPPERBOUND;
-        else if (bestMove.returnValue >= beta) transMove.flag = MoveValue.FLAG.LOWERBOUND;
-        else {
-            transMove.flag = MoveValue.FLAG.EXACT;
-        }
-
-        transposition.put(boardToKey(board), transMove);
+//        transMove = bestMove;
+//        transMove.returnMove = bestMove.returnMove;
+//        transMove.returnValue = bestMove.returnValue;
+//        transMove.depth = depth;
+//        if (bestMove.returnValue <= alpha) transMove.flag = MoveValue.FLAG.UPPERBOUND;
+//        else if (bestMove.returnValue >= beta) transMove.flag = MoveValue.FLAG.LOWERBOUND;
+//        else {
+//            transMove.flag = MoveValue.FLAG.EXACT;
+//        }
+//
+//        transposition.put(boardToKey(board), transMove);
 
         return bestMove;
     }

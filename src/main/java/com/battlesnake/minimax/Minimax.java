@@ -59,7 +59,7 @@ public class Minimax {
         startTime = System.currentTimeMillis();
         MoveValue move = null;
         int distance;
-        for (distance = 1; distance < 7 && !outOfTime(startTime); distance++) {
+        for (distance = 1; distance < 8 && !outOfTime(startTime); distance++) {
             move = maximize(board, mySnake, enemy, distance, Minimax.MIN, Minimax.MAX);
         }
         // System.out.println(move.returnMove + ", " + move.returnValue);
@@ -108,6 +108,7 @@ public class Minimax {
 
             // Transposition re-order
             if (transMove != null && transMove.depth < depth) {
+                System.out.println("Re-order");
                 for(int i = 0; i < moves.size(); i++){
                     if(moves.get(i).equals(transMove.returnMove)){
                         Collections.swap(moves, 0, i);

@@ -61,9 +61,7 @@ public class Minimax {
         int distance;
         for (distance = 1; distance < 6 && !outOfTime(startTime); distance++) {
             move = maximize(board, mySnake, enemy, distance, Minimax.MIN, Minimax.MAX);
-            System.out.println("Found move at depth: " + (5 - distance) + ": " + move.returnMove.toString());
         }
-        System.out.println("-------------");
         // System.out.println(move.returnMove + ", " + move.returnValue);
         return move;
     }
@@ -80,9 +78,9 @@ public class Minimax {
         // transposition lookup
         MoveValue transMove = transposition.get(boardToKey(board));
 
-//        if (transMove != null && transMove.depth >= depth) {
-//            return transMove;
-//        }
+        if (transMove != null && transMove.depth >= depth) {
+            return transMove;
+        }
 
         if (depth == 0 || outOfTime(startTime)) {
             MoveValue move = new MoveValue(value, depth);
@@ -161,17 +159,17 @@ public class Minimax {
         }
 
         // transposition store
-//        transMove = bestMove;
-//        transMove.returnMove = bestMove.returnMove;
-//        transMove.returnValue = bestMove.returnValue;
-//        transMove.depth = depth;
+        transMove = bestMove;
+        transMove.returnMove = bestMove.returnMove;
+        transMove.returnValue = bestMove.returnValue;
+        transMove.depth = depth;
 //        if (bestMove.returnValue <= alpha) transMove.flag = MoveValue.FLAG.UPPERBOUND;
 //        else if (bestMove.returnValue >= beta) transMove.flag = MoveValue.FLAG.LOWERBOUND;
 //        else {
 //            transMove.flag = MoveValue.FLAG.EXACT;
 //        }
 //
-//        transposition.put(boardToKey(board), transMove);
+        transposition.put(boardToKey(board), transMove);
 
         return bestMove;
     }

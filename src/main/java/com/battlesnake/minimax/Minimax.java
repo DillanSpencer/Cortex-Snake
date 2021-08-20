@@ -75,21 +75,19 @@ public class Minimax {
         MoveValue returnMove;
         MoveValue bestMove = null;
 
-        if (depth == 0 || outOfTime(startTime)) {
-            return new MoveValue(value, depth);
-        }
-
         // transposition lookup
         MoveValue transMove = transposition.get(boardToKey(board));
 
         if (transMove != null && transMove.depth >= depth) {
-            if (transMove.flag == MoveValue.FLAG.EXACT){
-                System.out.println("Trans Move found");
-                return new MoveValue(transMove.returnValue, depth);
-            }
-            else if (transMove.flag == MoveValue.FLAG.LOWERBOUND) alpha = Math.max(alpha, transMove.returnValue);
-            else if (transMove.flag == MoveValue.FLAG.UPPERBOUND) beta = Math.min(beta, transMove.returnValue);
-            if (alpha >= beta) return new MoveValue(transMove.returnValue, depth);
+            System.out.println("Trans Move found");
+            return transMove;
+        }
+
+        if (depth == 0 || outOfTime(startTime)) {
+            MoveValue move = new MoveValue(value, depth);
+            move.flag = MoveValue.FLAG.EXACT;
+            transposition.put(boardToKey(board), move);
+            return move;
         }
 
         if (isMaximizing) {
@@ -613,7 +611,7 @@ public class Minimax {
         }
     }
 
-    private String boardToKey(Tile[][] board){
+    private String boardToKey(Tile[][] board) {
         String key = "";
         for (int y = 0; y < 11; y++) {
             for (int x = 0; x < 11; x++) {

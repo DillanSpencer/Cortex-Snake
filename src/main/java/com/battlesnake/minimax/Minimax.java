@@ -59,7 +59,7 @@ public class Minimax {
         startTime = System.currentTimeMillis();
         MoveValue move = null;
         int distance;
-        for (distance = 1; distance < 5 && !outOfTime(startTime); distance++) {
+        for (distance = 1; distance < 6 && !outOfTime(startTime); distance++) {
             move = maximize(board, mySnake, enemy, distance, Minimax.MIN, Minimax.MAX);
             System.out.println("Found move at depth: " + (5 - distance) + ": " + move.returnMove.toString());
         }

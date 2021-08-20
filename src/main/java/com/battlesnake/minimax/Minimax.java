@@ -61,7 +61,9 @@ public class Minimax {
         int distance;
         for (distance = 1; distance < 5 && !outOfTime(startTime); distance++) {
             move = maximize(board, mySnake, enemy, distance, Minimax.MIN, Minimax.MAX);
+            System.out.println("Found move at depth: " + (5 - distance) + ": " + move.returnMove.toString());
         }
+        System.out.println("-------------");
         // System.out.println(move.returnMove + ", " + move.returnValue);
         return move;
     }
@@ -79,7 +81,6 @@ public class Minimax {
         MoveValue transMove = transposition.get(boardToKey(board));
 
         if (transMove != null && transMove.depth >= depth) {
-            System.out.println("Trans Move found");
             return transMove;
         }
 

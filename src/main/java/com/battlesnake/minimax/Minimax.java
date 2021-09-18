@@ -222,7 +222,7 @@ public class Minimax {
         Integer[][] regions = new Integer[width][height];
         Integer[][] enemyRegions = new Integer[width][height];
         fillIn(board, regions, snake);
-        //fillIn(board, enemyRegions, enemy);
+        fillIn(board, enemyRegions, enemy);
 
 //        if (this.board[head.getX()][head.getY()].getTileType() == TileType.FOOD) score += 100;
 
@@ -233,16 +233,16 @@ public class Minimax {
                 score += regions[move.getValue().getX()][move.getValue().getY()] / 2;
             }
         }
-//        for (Map.Entry<Move, Point> move : Move.adjacent(enemy.getHead()).entrySet()) {
-//            if (movable(board, move.getValue(), true)) {
-//                enemyReg += enemyRegions[move.getValue().getX()][move.getValue().getY()];
-//            }
-//        }
+        for (Map.Entry<Move, Point> move : Move.adjacent(enemy.getHead()).entrySet()) {
+            if (movable(board, move.getValue(), true)) {
+                enemyReg += enemyRegions[move.getValue().getX()][move.getValue().getY()];
+            }
+        }
 
         Point center = new Point(width / 2, height / 2);
         score -= Point.distance(head, center) * 2;
 
-//        if (playerReg > enemyReg) score += (playerReg - enemyReg);
+        if (playerReg > enemyReg) score += (playerReg - enemyReg);
 
 
         return score;
